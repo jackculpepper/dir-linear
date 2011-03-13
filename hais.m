@@ -1,18 +1,20 @@
 function logZ = hais(opts, theta, varargin);
 
 ET = opts.E;
-E0 = opts.E0;
-
-dE0dX = opts.dE0dX;
 dETdX = opts.dEdX;
 
-logZ0 = opts.logZ0;
-logZ0func = opts.logZ0func;
+
+%% fix the proposal distribution to be univariate gaussian
+E0 = @E_gauss_unit_norm;
+dE0dX = @dEdX_gauss_unit_norm;
+logZ0 = @logZ_gauss_unit_norm;
+
 
 B = opts.B;
 T = opts.T;
 M = opts.M;
 
+%% fix the parameters for the sampler
 epsilon = 0.01;
 alpha = 0.5;
 beta = 1 - exp(log(alpha) * epsilon);
@@ -95,12 +97,10 @@ for t = 2:T
     num_rej = num_rej + sum(idx);
     num_tot = num_tot + size(p,2);
 
-    fprintf('\rt %d / %d', t, T);
+    if opts.flag_debug ; fprintf('\rt %d / %d', t, T); end
 end
-fprintf('\n');
 
-
-logZweights = logZ0func(M, theta, varargin{:}) + logw;
+logZweights = logZ0(M, varargin{:}) + logw;
 k = max(logZweights);
 logZ = log(sum(exp(logZweights - k))/B) + k;
 
@@ -108,7 +108,22 @@ if isinf(logZ)
     keyboard
 end
 
-fprintf('reject fraction %f\n', num_rej / num_tot);
+if opts.flag_debug
+    fprintf(' reject fraction %f\n', num_rej / num_tot);
+end
 
+
+
+
+%% univariate normal logZ, E, and dEdX
+
+function dE = dEdX_gauss_unit_norm(X, varargin)
+dE = X;
+
+function E = E_gauss_unit_norm(X, varargin)
+E = 0.5*sum(X.^2, 1);
+
+function logZ = logZ_gauss_unit_norm(M, varargin )
+logZ = (M/2) * log( 2*pi );
 
 

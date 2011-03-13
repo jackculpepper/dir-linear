@@ -71,8 +71,8 @@ opts_lbfgs = lbfgs_options('iprint', -1, 'maxits', 10, ...
 
 
 %% hais options
-opts_hais.BatchSize = 200;		% number of particles
-opts_hais.DataSize = M;
+opts_hais.B = 200;		% number of particles
+opts_hais.M = M;
 
 switch model
     case 'gauss'
@@ -82,13 +82,6 @@ switch model
         opts_hais.E = @E_laplace;
         opts_hais.dEdX = @dEdX_laplace; 
 end
-
-opts_hais.epsilon = 0.1;
-opts_hais.epsilon = 0.01;
-opts_hais.Debug = 0;
-opts_hais.sumlogZ = 1;
-opts_hais.interpType = 'cos';
-opts_hais.interpType = 'lin';
 
  
 %% langevin options
