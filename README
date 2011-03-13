@@ -1,0 +1,28 @@
+
+Hamiltonian Monte Carlo image modeling kit
+
+
+This program optimizes a linear generative model of images. The model is
+directed, and is defined as follows:
+
+x = \Phi a + n
+
+where x is an image, and the image likelihood given the latent variables is:
+
+p(x|a) = N(0, \sigma I) \, .
+
+Two priors are included, both i.i.d. A Gaussian prior:
+
+p(a) = N(0, I)
+
+and a Laplacian prior:
+
+p(a) = 1/2 exp(-||a||_1) \, .
+
+The parameters \Phi and \sigma are learned using expectation maximization.
+The posterior over the latent variables p(a|x) is represented using an HMC
+algorithm. We introduce momentum variables, v, one per latent 'a' variable
+
+p(v) = N(0, I)
+
+
