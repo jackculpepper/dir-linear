@@ -73,6 +73,7 @@ opts_lbfgs = lbfgs_options('iprint', -1, 'maxits', 10, ...
 %% hais options
 opts_hais.B = 200;		% number of particles
 opts_hais.M = M;
+opts_hais.flag_debug = 0;
 
 switch model
     case 'gauss'
@@ -110,5 +111,5 @@ end
 
 t_range = 10.^[2:0.5:5];
 
-fig_ais
+fig_eval
 
