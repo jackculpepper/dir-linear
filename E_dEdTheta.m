@@ -1,4 +1,4 @@
-function [f, g] = wrap_dEdTheta(x0, X, a, sigma);
+function [f, g] = E_dEdTheta(x0, X, a, sigma);
 
 [L, B] = size(X);
 M = size(a, 1);
